@@ -102,7 +102,7 @@ class MultimodalTransformer(SentenceTransformer):
                     embeddings = [emb[:i] for emb, i in zip(embeddings, input_mask.sum(dim=1))]
                 all_embeddings.extend(embeddings)
         
-        convert_to_tensot=True
+        convert_to_tensor=True
         if convert_to_tensor:
             try:
                 all_embeddings = torch.stack(all_embeddings)
