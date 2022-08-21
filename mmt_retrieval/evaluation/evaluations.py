@@ -781,7 +781,7 @@ class ImageQuestionClassification(Evaluator):
         logging.info("Accuracy on " + self.name + " dataset" + out_txt)
 
         logits = model.encode(self.questions, self.images, batch_size=self.batch_size, show_progress_bar=True, output_value="logits")
-
+        logits = torch.tensor(logits)
         acc = (self.labels.squeeze() == torch.argmax(logits, dim=1)).squeeze().long().cpu().tolist()
 
         acc = np.mean(acc)
