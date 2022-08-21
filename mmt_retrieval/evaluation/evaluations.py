@@ -781,28 +781,28 @@ class ImageQuestionClassification(Evaluator):
         logging.info("Accuracy on " + self.name + " dataset" + out_txt)
 
         logits = model.encode(self.questions, self.images, batch_size=self.batch_size, show_progress_bar=True, output_value="logits")
-        logits = torch.tensor(logits).to('cuda')
-        self.labels = self.labels.to('cuda')
+        logits = logits.detach().cpu().numpy()
+        self.labels = self.labels.detach().cpu().numpy()
         
-        #print(logits)
-        #print(self.labels.squeeze())
-        acc = (self.labels.squeeze() == torch.argmax(logits.to('cpu'), dim=1)).squeeze().long().cpu().tolist()
 
+        acc = (self.labels == np.argmax(logits, axis=1))
+        print(acc)
         acc = np.mean(acc)
-        logging.info("Questions: {}\n".format(len(self.questions)))
-        logging.info(f"Accuracy: {acc:.2f}")
-        if output_path is not None:
-            csv_path = os.path.join(output_path, self.file)
-            if not os.path.isfile(csv_path):
-                fOut = open(csv_path, mode="w", encoding="utf-8")
-                fOut.write(",".join(self.csv_headers))
-                fOut.write("\n")
-            else:
-                fOut = open(csv_path, mode="a", encoding="utf-8")
+        # logging.info("Questions: {}\n".format(len(self.questions)))
+        # logging.info(f"Accuracy: {acc:.2f}")
+        # if output_path is not None:
+        #     csv_path = os.path.join(output_path, self.file)
+        #     if not os.path.isfile(csv_path):
+        #         fOut = open(csv_path, mode="w", encoding="utf-8")
+        #         fOut.write(",".join(self.csv_headers))
+        #         fOut.write("\n")
+        #     else:
+        #         fOut = open(csv_path, mode="a", encoding="utf-8")
 
-            output_data = [epoch, steps, acc]
+        #     output_data = [epoch, steps, acc]
 
-            fOut.write(",".join(map(str,output_data)))
-            fOut.write("\n")
-            fOut.close()
+        #     fOut.write(",".join(map(str,output_data)))
+        #     fOut.write("\n")
+        #     fOut.close()
+        #acc = 0
         return acc
