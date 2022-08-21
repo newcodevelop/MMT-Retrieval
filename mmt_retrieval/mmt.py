@@ -45,8 +45,8 @@ class MultimodalTransformer(SentenceTransformer):
                show_progress_bar: bool = None,
                output_value: str = 'multimodal_embedding',
                cross_product_input: bool = False,
-               convert_to_numpy: bool = True,
-               convert_to_tensor: bool = False,
+               convert_to_numpy: bool = False,
+               convert_to_tensor: bool = True,
                is_pretokenized: bool = False,
                device: str = None,
                num_workers: int = 0) -> Union[List[Tensor], ndarray, Tensor]:
@@ -101,7 +101,8 @@ class MultimodalTransformer(SentenceTransformer):
                     #embeddings = embeddings * input_mask_expanded
                     embeddings = [emb[:i] for emb, i in zip(embeddings, input_mask.sum(dim=1))]
                 all_embeddings.extend(embeddings)
-
+        
+        convert_to_tensot=True
         if convert_to_tensor:
             try:
                 all_embeddings = torch.stack(all_embeddings)
