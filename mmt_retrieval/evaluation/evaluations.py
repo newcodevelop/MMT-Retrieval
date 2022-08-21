@@ -786,7 +786,7 @@ class ImageQuestionClassification(Evaluator):
         
         #print(logits)
         #print(self.labels.squeeze())
-        acc = (self.labels.squeeze() == torch.argmax(logits, dim=1)).squeeze().long().cpu().tolist()
+        acc = (self.labels.squeeze() == torch.argmax(logits.to('cpu'), dim=1)).squeeze().long().cpu().tolist()
 
         acc = np.mean(acc)
         logging.info("Questions: {}\n".format(len(self.questions)))
