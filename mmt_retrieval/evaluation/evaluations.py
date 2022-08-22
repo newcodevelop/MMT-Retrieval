@@ -782,10 +782,10 @@ class ImageQuestionClassification(Evaluator):
 
         logits = model.encode(self.questions, self.images, batch_size=self.batch_size, show_progress_bar=True, output_value="logits")
         
-        if not isinstance(logits, numpy.ndarray):
+        if not isinstance(logits, np.ndarray):
           logits = logits.detach().cpu().numpy()
         
-        if not isinstance(self.labels, numpy.ndarray):
+        if not isinstance(self.labels, np.ndarray):
           self.labels = self.labels.detach().cpu().numpy()
         
 
